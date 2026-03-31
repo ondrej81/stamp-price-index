@@ -6,7 +6,7 @@ import {
 } from "./data/countries.js";
 
 export default function App() {
-  const [modeKey, setModeKey] = useState("nominal");
+  const [modeKey, setModeKey] = useState("vpd");
   const [sort, setSort] = useState("desc");
   const [view, setView] = useState("chart");
   const [showChanged, setShowChanged] = useState(false);
@@ -145,20 +145,28 @@ export default function App() {
               const pct = (val / maxVal) * 100;
               const avgPct = (avgVal / maxVal) * 100;
               const above = val > avgVal;
+              const isUK = d.code === "GB";
+              const barColor = isUK ? BLUE : above ? lightAccent : GREY;
               return (
-                <div key={d.code} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+                <div key={d.code} style={{
+                  display: "flex", alignItems: "center", gap: 6, marginBottom: 5,
+                  background: isUK ? "#e8eaf6" : "transparent",
+                  borderRadius: isUK ? 6 : 0,
+                  padding: isUK ? "2px 4px" : "2px 4px",
+                  margin: isUK ? "4px 0" : "0 0 5px 0",
+                }}>
                   <div style={{ width: 20, fontSize: 13, textAlign: "center" }}>{d.flag}</div>
-                  <div style={{ width: 112, fontSize: 11, color: "#333", fontWeight: 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ width: 112, fontSize: 11, color: isUK ? BLUE : "#333", fontWeight: isUK ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {d.changed && <span style={{ color: AMBER, marginRight: 3 }}>↑</span>}
                     {d.country}
                   </div>
                   <div style={{ flex: 1, position: "relative", height: 18 }}>
                     <div style={{ position: "absolute", left: `${avgPct}%`, top: 0, bottom: 0, width: 1, borderLeft: "1.5px dashed #bbb", zIndex: 2 }} />
                     <div style={{ position: "absolute", left: 0, top: 2, height: 14, width: `${pct}%`,
-                      background: above ? lightAccent : GREY, borderRadius: 3 }} />
+                      background: barColor, borderRadius: 3 }} />
                   </div>
                   <div style={{ width: 44, fontSize: 11, fontWeight: 700, textAlign: "right",
-                    color: above ? (modeKey === "vpd" ? TEAL : "#b71c1c") : "#546e7a" }}>
+                    color: isUK ? BLUE : above ? (modeKey === "vpd" ? TEAL : "#b71c1c") : "#546e7a" }}>
                     {fmt(val)}
                   </div>
                   {modeKey === "vpd" && (
@@ -189,10 +197,11 @@ export default function App() {
               <tbody>
                 {sorted.map((d, i) => (
                   <tr key={d.code} style={{
-                    background: i % 2 === 0 ? "#fff" : "#fafafa",
+                    background: d.code === "GB" ? "#e8eaf6" : i % 2 === 0 ? "#fff" : "#fafafa",
                     borderBottom: "1px solid #f0f0f0",
+                    fontWeight: d.code === "GB" ? 700 : 400,
                   }}>
-                    <td style={{ padding: "6px 10px", fontWeight: 400, color: "#333" }}>
+                    <td style={{ padding: "6px 10px", fontWeight: d.code === "GB" ? 700 : 400, color: d.code === "GB" ? BLUE : "#333" }}>
                       {d.flag} {d.country}
                     </td>
                     <td style={{ padding: "6px 10px", textAlign: "right", fontWeight: modeKey === "nominal" ? 700 : 400,
