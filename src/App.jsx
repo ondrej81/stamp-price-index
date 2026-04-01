@@ -4,8 +4,10 @@ import {
   RED, BLUE, TEAL, GREY, LIGHT_RED, LIGHT_TEAL, AMBER,
   MODES, fmt,
 } from "./data/countries.js";
+import CostBreakdown from "./CostBreakdown.jsx";
 
 export default function App() {
+  const [tab, setTab] = useState("index");
   const [modeKey, setModeKey] = useState("vpd");
   const [sort, setSort] = useState("desc");
   const [view, setView] = useState("chart");
@@ -47,6 +49,22 @@ export default function App() {
           </p>
         </div>
       </div>
+
+      {/* Top-level tabs */}
+      <div style={{ background: BLUE, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+        <div style={{ maxWidth: 780, margin: "0 auto", display: "flex", padding: "0 16px" }}>
+          {[["index", "📊 Price comparison"], ["breakdown", "💰 Cost breakdown"]].map(([key, label]) => (
+            <button key={key} onClick={() => setTab(key)} style={{
+              padding: "9px 16px", border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+              background: "transparent", color: tab === key ? "#fff" : "rgba(255,255,255,0.55)",
+              borderBottom: tab === key ? "2px solid #fff" : "2px solid transparent",
+            }}>{label}</button>
+          ))}
+        </div>
+      </div>
+
+      {tab === "breakdown" && <CostBreakdown />}
+      {tab === "index" && <>
 
       {/* Update banner */}
       <div style={{ background: "#fff3e0", borderBottom: "1px solid #ffe0b2", padding: "8px 18px" }}>
@@ -233,6 +251,8 @@ export default function App() {
           · Remaining prices: Bundesnetzagentur Jan 2025 · Eurostat AIC PPS 2024 · EUR/GBP ECB 31 Mar 2026
         </div>
       </div>
+
+      </>}
     </div>
   );
 }
