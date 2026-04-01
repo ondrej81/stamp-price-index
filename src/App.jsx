@@ -42,6 +42,7 @@ export default function App() {
       {/* Header */}
       <div style={{ background: BLUE, color: "#fff", padding: "20px 18px 14px" }}>
         <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", opacity: .6, marginBottom: 4 }}>Royal Mail Comparison</div>
           <h1 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>European Stamp Price Index</h1>
           <p style={{ margin: "4px 0 0", fontSize: 11, opacity: .7 }}>
             All prices in <strong>GBP</strong> · EUR/GBP 0.8696 (31 Mar 2026) ·
